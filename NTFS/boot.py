@@ -3,12 +3,7 @@ from NTFS.misc import *
 
 _boot_instance = None
 
-def get_boot(bootfile_raw=b""):
-    if _boot_instance != None:
-            return _boot_instance
-
-
-class Boot():
+class Boot(Freeze):
 
     def __init__(self, bootfile_raw=b""):
         global _boot_instance
@@ -30,13 +25,14 @@ class Boot():
         self.sectors_in_disk = from_bytes(bootfile_raw[0x28:0x30])
 
         self.mft_cluster_offset = from_bytes(bootfile_raw[0x30:0x38])
-        print(self.mft_cluster_offset)
 
         # actually is from 0x40:0x44, however saved in disk as if it is only one byte long
         # so negative values wont have 0xFF in their more significant bytes
         self.mft_clusters_per_entry = from_bytes(bootfile_raw[0x40]) 
 
         _boot_instance = self
+
+        super().__init__()
     
     def get(bootfile_raw=b""):
         global _boot_instance

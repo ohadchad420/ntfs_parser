@@ -7,7 +7,6 @@ class NTFSManager():
         self.drive_file = open(disk_drive, 'rb')
         self.drive_file.seek(0)
         boot_sector_raw = self.drive_file.read(g.BOOT_SECTOR_SIZE)
-
         self._boot = Boot(boot_sector_raw)
 
     def exit(self):
